@@ -62,7 +62,7 @@ public class EnviromentalSimulation extends Thread {
         //simulator = new AI_type(30, 70, 70, 2.0f, 1.2f, 0.9f,0.04f,"Simulator2000");
         //simulator = new AI_type(35, 90, 90, 2.0, 1.2, 0.9f,0.04f,"Simulator2000");
 
-        simulator = new AI_type(randFloat(30, AI_manager.neighbourhoodSeparation_upper_bound), 70, 70, 2.0, 1.2, 0.9f,0.04f,"Simulator2000");
+        simulator = new AI_type(20, 70, 70, 2.0, 1.2, 0.9f,0.04f,"Simulator2000");
 
         //simulator = new AI_type(30, 70, 70, 2, 1.2, 0.9,0.04f,"Simulator2000");
         SimulationClones = copyTheStateOfAttackBoids(defenders);
