@@ -17,11 +17,13 @@ public class WaypointLearner {
     private AI_type ai;
     private ArrayList<Boid_generic> defenders;
     private PApplet parent;
+    private PatrollingScheme scheme;
 
     public WaypointLearner(PApplet parent,AI_type ai, ArrayList<Boid_generic> defenders) {
         this.ai = ai;
         this.defenders = copyTheStateOfAttackBoids(defenders);
         this.parent=parent;
+        this.scheme =  new PatrollingScheme(ai.getWayPointForce());
 
         //Generate Random waypoints
         for (int x = 0; x < rand.nextInt(100) + 20; x++) {

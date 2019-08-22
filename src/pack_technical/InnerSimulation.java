@@ -207,19 +207,14 @@ public class InnerSimulation {
 
                         if (Math.abs(PVector.dist(b1.getLocation(), location)) < 16) {  // was 3
                             attacker.setHasFailed(true);
-
                         }
-
                     }
-
                     if ((PVector.dist(location, new PVector(550, 500)) < 8 || PVector.dist(attackBoids.get(0).getLocation(), location) >= distance /*location.x-50<=0*/) && !attacker.isHasFailed()) {
 
                         simulating = false;
                     }
 
                     velocity.limit(1);
-
-
                     location.add(velocity.add(acceleration.add(pair.getValue())));
                     acceleration.mult(0);
 
@@ -229,8 +224,6 @@ public class InnerSimulation {
                 }
 
             }
-
-
             theClosetDistance = 2000;
             CheckVector = false;
             for (Map.Entry<ArrayList<Boid_generic>, PVector> pair : attackingVectors.entrySet()) {
