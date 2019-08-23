@@ -1,6 +1,6 @@
 package pack_technical;
 
-import com.sun.media.sound.AiffFileReader;
+
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
 import pack_AI.AI_manager;

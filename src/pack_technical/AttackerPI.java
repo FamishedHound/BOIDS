@@ -3,7 +3,7 @@ package pack_technical;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class AttackerAPI {
+public class AttackerPI {
     private PApplet parent;
     private boolean running=true;
     private PVector[] movement = new PVector[4];
@@ -11,7 +11,7 @@ public class AttackerAPI {
     private int frameCount = 0;
 
 
-    public AttackerAPI(PApplet parent){
+    public AttackerPI(PApplet parent){
         this.parent=parent;
         movement[0]=new PVector(1,0);
         movement[1]=new PVector(-1,0);
@@ -24,7 +24,7 @@ public class AttackerAPI {
         parent.noLoop();
     }
 
-    public void saveFrame(){
+    public synchronized void saveFrame(){
        parent.saveFrame("./Frame/frame"+frameCount+".png" );
        frameCount+=1;
     }

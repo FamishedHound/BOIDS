@@ -2,22 +2,15 @@ package pack_technical;
 
         import pack_1.ParameterGatherAndSetter;
         import pack_boids.Boid_generic;
-        import pack_boids.Boid_standard;
         import processing.core.PApplet;
-        import processing.core.PShape;
         import processing.core.PVector;
 
-        import java.io.BufferedReader;
-        import java.io.File;
-        import java.io.FileReader;
         import java.io.IOException;
         import java.util.ArrayList;
-        import java.util.Iterator;
-        import java.util.concurrent.TransferQueue;
 
         import static java.lang.Math.abs;
 
-public class ZoneDefence implements Cloneable{
+public class ZoneDefence  implements Cloneable{
     private static  BaseManager base;
     private static   GameManager manager;
 
@@ -43,7 +36,7 @@ public class ZoneDefence implements Cloneable{
     private ArrayList<Boid_generic> attackBoids;
     private PApplet parent;
 
-    private AttackerAPI attackerApi ;
+    private AttackerPI attackerPI;
     private int kolnter= 0;
 
 
@@ -72,7 +65,7 @@ public class ZoneDefence implements Cloneable{
     ParameterSimulation param;
     ParameterGatherAndSetter output;
 
-    public ZoneDefence(BaseManager b, GameManager g, PApplet p, CollisionHandler collision, FlockManager flock, ParameterGatherAndSetter output) throws IOException {
+    public ZoneDefence(BaseManager b, GameManager g, PApplet p, CollisionHandler collision, FlockManager flock, ParameterGatherAndSetter output)  throws IOException {
         this.flock=flock;
         this.handler=collision;
         this.parent=p;
@@ -82,7 +75,7 @@ public class ZoneDefence implements Cloneable{
         attackBoids = manager.get_team(1);
         pattern = new PatternHandler();
         this.output =output;
-        attackerApi = new AttackerAPI(parent);
+        attackerPI = new AttackerPI(parent);
         // ACUTAL WAYPOINTS ____________________________________________
 //       waypoints.add(new PVector(50,800));
 //       waypoints.add(new PVector(450,500));
@@ -177,7 +170,7 @@ public class ZoneDefence implements Cloneable{
                 PVector velocity = be1.getVelocity();
                 PVector location = be1.getLocation();
                 velocity.limit(1);
-                PVector attackVector = attackerApi.move("left");
+                PVector attackVector = attackerPI.move("left");
                 attackVector.setMag(0.09f);
                 location.add(velocity.add(acceleration.add(attackVector)));
 
@@ -210,7 +203,9 @@ public class ZoneDefence implements Cloneable{
 
         }
         output.iterations++;
-        attackerApi.saveFrame();
+        new Thread(
+                () -> attackerPI.saveFrame()).start();
+
     }
 
     public PVector defend(Boid_generic b){
