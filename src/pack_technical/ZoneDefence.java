@@ -42,6 +42,11 @@ public class ZoneDefence implements Cloneable{
     private ArrayList<Boid_generic> boids;
     private ArrayList<Boid_generic> attackBoids;
     private PApplet parent;
+
+    private AttackerAPI attackerApi ;
+    private int kolnter= 0;
+
+
     private boolean isZoneAttacked=false;
     static  ArrayList<Boid_generic> clones;
     static int coutner=0;
@@ -77,6 +82,7 @@ public class ZoneDefence implements Cloneable{
         attackBoids = manager.get_team(1);
         pattern = new PatternHandler();
         this.output =output;
+        attackerApi = new AttackerAPI(parent);
         // ACUTAL WAYPOINTS ____________________________________________
 //       waypoints.add(new PVector(50,800));
 //       waypoints.add(new PVector(450,500));
@@ -153,55 +159,6 @@ public class ZoneDefence implements Cloneable{
         for(Boid_generic be1 : attackBoids){
 
             coutner++;
-            if(coutner>=DELAY/8 && coutner <= DELAY*2) {
-                //______________________unable movement of the attack
-                if(!attack)  be1.setToMove(false);
-                be1.setLocation(new PVector(be1.getLocation().x, be1.getLocation().y));
-                be1.setVelocity(new PVector(0, 0));
-                be1.setAcceleration(new PVector(0, 0));
-
-                delay2++;
-
-            }
-            //         IMITATING THE MOVEMENT OF THE DEFENDERS
-            /*PVector imitate = pHandler.getCurrentResultant();
-
-            be1.getVelocity().limit(1);
-            PVector accelet = new PVector(0,0);
-
-                System.out.println("test1 "+ imitate);
-                accelet = be1.getAcceleration().add(imitate);
-
-                    if (abs(PVector.dist(boids.get(0).getLocation(), new PVector(150, 500))) < 120) {
-                        System.out.println("here");
-                        accelet.add(PVector.sub(be1.getLocation(), new PVector(150, 500)));
-                        accelet.setMag(1);
-
-                }
-
-            be1.getLocation().add(be1.getVelocity().add(accelet));
-            be1.getAcceleration().mult(0);*/
-
-
-            if(delay2>=200) {
-
-                pattern.newObservation(boids,coutner);
-
-                if (attackBoids != null && flag && pattern.analyze()==1) {
-                    long delay = 0;
-                    circumfence = (float) (3.14 * 2 * pattern.getRadius());
-
-                    System.out.println(attackBoids);
-                    ArrayList<Boid_generic> copy = copyTheStateOfAttackBoids(manager.get_team(1));
-                    //System.out.println(copy+"bef");
-
-                    time =  (circumfence/boids.get(0).getVelocity().mag());
-                    System.out.println(boids.get(0).getVelocity().mag() + "   " + circumfence + "   " + time + "  " + (float) startTime);
-                    //s = new Simulation(copy, parent, this,handler,patrolling);
-                    flag = false;
-                    startTime = System.nanoTime();
-                }
-            }
 
             if(s!=null){
 
@@ -211,25 +168,21 @@ public class ZoneDefence implements Cloneable{
                 //System.out.println((end-startTime)/1000000000 + "  " + time);
                 //if((float)(end-startTime)/1000000000>=time/200) attack=true;
             }
+  // ATACK MODE
 
-            // ATACK MODE
-            if(attack) {
+
 
                 be1.setToMove(true);
                 PVector acceleration = be1.getAcceleration();
                 PVector velocity = be1.getVelocity();
                 PVector location = be1.getLocation();
                 velocity.limit(1);
-                PVector attackVector = sim.reutrnTargetVecotr();
-                attackVector.setMag(0.1f);
+                PVector attackVector = attackerApi.move("left");
+                attackVector.setMag(0.09f);
                 location.add(velocity.add(acceleration.add(attackVector)));
 
                 acceleration.mult(0);
-            }else if(!attack){
-                be1.setLocation(new PVector(be1.getLocation().x, be1.getLocation().y));
-                be1.setVelocity(new PVector(0, 0));
-                be1.setAcceleration(new PVector(0, 0));
-            }
+
 
 
 
@@ -257,6 +210,7 @@ public class ZoneDefence implements Cloneable{
 
         }
         output.iterations++;
+        attackerApi.saveFrame();
     }
 
     public PVector defend(Boid_generic b){
