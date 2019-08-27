@@ -82,12 +82,12 @@ public class ParameterGatherAndSetter {
     public void gather() throws IOException {
         if(col.isLose()){
             System.out.println("Simulation took " + Math.round((System.nanoTime()-startTime)/1000000000) + " s and was a failure");
-            generateEndingStatement(0);
-            System.exit(0);
+            //generateEndingStatement(0);
+            //System.exit(0);
         } else if(col.isVictory()){
-            generateEndingStatement(1);
+            //generateEndingStatement(1);
             System.out.println("Simulation took " + Math.round((System.nanoTime()-startTime)/1000000000) + " s and was a victory");
-            System.exit(0);
+            //System.exit(0);
         }
     }
 

@@ -82,38 +82,16 @@ public class ZoneDefence implements Cloneable{
         attackBoids = manager.get_team(1);
         pattern = new PatternHandler();
         this.output =output;
-        attackerApi = new AttackerAPI(parent);
-        // ACUTAL WAYPOINTS ____________________________________________
-//       waypoints.add(new PVector(50,800));
-//       waypoints.add(new PVector(450,500));
-//     waypoints.add(new PVector(50,100));
-
-            waypoints.addAll(output.returnDifficulty());
-
+        attackerApi = new AttackerAPI(parent, attackBoids.get(0).getLocation(),collision,attackBoids,boids);
+        new Thread(
+                () -> attackerApi.establishConnection()).start();
+//        new Thread(
+//                () -> attackerApi.runMe()).start();
+        waypoints.addAll(output.returnDifficulty());
 
 
-        // INNER WAYPOINTS FROM PREVIOUS ________________________________
-//       File file = new File("out4.txt");
-////
-//       BufferedReader br = new BufferedReader(new FileReader(file));
-////
-//        String st;
-//       String[] cords= new String[1];
-//       while ((st = br.readLine()) != null){
-//           cords = st.split("]");
-//        }
-//
-//      for(String str : cords){
-//           String cord = str.replace("[","");
-//            String cordss[] = cord.split(",");
-//            waypoints.add(new PVector(Integer.parseInt(cordss[0]),Integer.parseInt(cordss[1])));
-//
-//
-//        }
-//        waypoints.add(new PVector(1500,500));
-//        for(PVector kk : waypoints){
-//            System.out.println(kk);
-//        }
+
+
 
         patrolling.getWaypointsA().add(new PVector(550,500));
         patrolling.setup();
@@ -177,8 +155,12 @@ public class ZoneDefence implements Cloneable{
                 PVector velocity = be1.getVelocity();
                 PVector location = be1.getLocation();
                 velocity.limit(1);
-                PVector attackVector = attackerApi.move("left");
-                attackVector.setMag(0.09f);
+                PVector attackVector = new PVector();
+                if (attackerApi.getAttackVector()!=null) {
+                attackVector = attackerApi.getAttackVector();
+                }
+                System.out.println(attackerApi.getAttackVector());
+                attackVector.setMag(0.1f);
                 location.add(velocity.add(acceleration.add(attackVector)));
 
                 acceleration.mult(0);
@@ -209,9 +191,20 @@ public class ZoneDefence implements Cloneable{
             }
 
         }
+
         output.iterations++;
-        attackerApi.saveFrame();
+
+        new Thread(
+                ()->attackerApi.saveFrame()
+        ).start();
+
+        attackerApi.set_frameCreated(true);
+        attackerApi.setPosition(attackBoids.get(0).getLocation());
+        //System.out.println(attackerApi.getReward());
+        parent.noLoop();
     }
+
+
 
     public PVector defend(Boid_generic b){
         PVector steer = new PVector(0, 0, 0);

@@ -12,7 +12,7 @@ import java.util.Arrays;
 /*
  * runs the simulation and holds/broadcasts the state
  */
-public class                                                              Launcher extends PApplet {
+public class  Launcher extends PApplet {
 
 
 
@@ -26,7 +26,6 @@ public class                                                              Launch
 	public enum predictStates { // which boids can see the future?
 		NONE, SELECTED, ALL
 	}
-
 	static predictStates predict_state = predictStates.SELECTED;
 	PFont font_1, font_2;
 	final static int HISTORYLENGTH = 0; // (1 second)

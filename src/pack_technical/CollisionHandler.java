@@ -21,6 +21,14 @@ public class CollisionHandler {
         return victory;
     }
 
+    public void setLose(boolean lose) {
+        this.lose = lose;
+    }
+
+    public void setVictory(boolean victory) {
+        this.victory = victory;
+    }
+
     private boolean victory=false;
 
     public CollisionHandler(GameManager g){
