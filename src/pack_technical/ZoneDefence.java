@@ -72,7 +72,7 @@ public class ZoneDefence implements Cloneable{
     ParameterSimulation param;
     ParameterGatherAndSetter output;
 
-    public ZoneDefence(BaseManager b, GameManager g, PApplet p, CollisionHandler collision, FlockManager flock, ParameterGatherAndSetter output) throws IOException {
+    public ZoneDefence(BaseManager b, GameManager g, PApplet p, CollisionHandler collision, FlockManager flock, ParameterGatherAndSetter output,String[] args) throws IOException {
         this.flock=flock;
         this.handler=collision;
         this.parent=p;
@@ -82,7 +82,7 @@ public class ZoneDefence implements Cloneable{
         attackBoids = manager.get_team(1);
         pattern = new PatternHandler();
         this.output =output;
-        attackerApi = new AttackerAPI(parent, attackBoids.get(0).getLocation(),collision,attackBoids,boids);
+        attackerApi = new AttackerAPI(parent, attackBoids.get(0).getLocation(),collision,attackBoids,boids,args,g);
         new Thread(
                 () -> attackerApi.establishConnection()).start();
 //        new Thread(

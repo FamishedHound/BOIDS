@@ -29,7 +29,7 @@ public class AttackerAPI  {
     }
 
     private boolean running=true;
-
+    public String[] args;
     private PVector position ;
     private int frameCount = 0;
     private GatewayServer gatewayServer;
@@ -47,6 +47,7 @@ public class AttackerAPI  {
     private ArrayList<Boid_generic> defender;
     private ArrayList<Boid_generic> attacker ;
     private long startTime;
+    ParameterGatherAndSetter gatherer;
     public PVector getAttackVector() {
         return attackVector;
     }
@@ -65,14 +66,17 @@ public class AttackerAPI  {
         parent.loop();
     }
 
-    public AttackerAPI(PApplet parent, PVector position, CollisionHandler col, ArrayList<Boid_generic> attacker , ArrayList<Boid_generic> defender){
+    public AttackerAPI(PApplet parent, PVector position, CollisionHandler col, ArrayList<Boid_generic> attacker , ArrayList<Boid_generic> defender,String[] args,GameManager manager){
+        this.args=args;
         this.col=col;
         this.parent=parent;
         this.position=position;
         this.attacker =attacker;
         this.defender=defender;
         initializeMovement();
-        startTime = System.currentTimeMillis();
+        this.startTime=System.nanoTime();
+
+        this.gatherer=new ParameterGatherAndSetter(manager,col,args,0);
         //stack = new SharedStackJ2P();
     }
     //public SharedStackJ2P getStack(){
@@ -87,9 +91,11 @@ public class AttackerAPI  {
         parent.noLoop();
     }
     public void closeTheSimulation(){
+        reward=0;
         col.setLose(false);
         col.setVictory(false);
         frameCount=0;
+        startTime = System.nanoTime();
         for( Boid_generic be : defender){
             PVector acceleration = be.getAcceleration();
             PVector velocity = be.getVelocity();
@@ -102,27 +108,49 @@ public class AttackerAPI  {
         for (Boid_generic attack : attacker){
             PVector acceleration = attack.getAcceleration();
             PVector velocity = attack.getVelocity();
-            PVector location = new PVector(850,500);
-
+            PVector location = new PVector(Integer.parseInt(args[0]),Integer.parseInt(args[1]));
+            setPosition(location);
             attack.setLocation(location);
             attack.setVelocity(new PVector(0,0));
             attack.setAcceleration(new PVector(0,0));
         }
         //parent.loop();
     }
-
+    public String getFileInfo(int v){
+        try {
+            return gatherer.generateEndingStatement(v);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public float getReward(){
-        long time = System.currentTimeMillis() - startTime;
-        BigInteger estimatedTime = BigInteger.valueOf(time);
-        BigInteger timeout = new BigInteger("600000000000");
+
+
+        BigInteger timeout = new BigInteger("600");
+        long check = startTime-System.nanoTime();
+        BigInteger estimatedTime = BigInteger.valueOf(startTime-System.nanoTime());
         int compareValue = estimatedTime.compareTo(timeout);
         if (col.isVictory()){
-            return 9000;
+            try {
+                gatherer.generateEndingStatement(1);
+                return 9000;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         } else if (col.isLose() || compareValue == 1){
-            return -9000;
+            try {
+                gatherer.generateEndingStatement(0);
+                return -9000;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
-        return reward= 1/Math.abs(PVector.dist(position,new PVector(550,500f)));
+        return 0;
 
     }
     public void establishConnection() {

@@ -39,7 +39,7 @@ public class ParameterGatherAndSetter {
     int amountOfBoids=0;
     String difficulty;
     String[] args;
-    public ParameterGatherAndSetter(int PosX, int PosY, int difficulty, int mode, GameManager game , CollisionHandler col, String[] args)  {
+    public ParameterGatherAndSetter( GameManager game , CollisionHandler col, String[] args,int mode)  {
         this.game=game;
         this.args=args;
         this.difficulty=args[3];
@@ -49,20 +49,22 @@ public class ParameterGatherAndSetter {
         this.counter=Integer.parseInt(args[2]);
         amountOfBoids=Integer.parseInt(args[4]);
         startTime=System.nanoTime();
-        game.spawn_boids(0,amountOfBoids,new PVector(450,510));
-        game.spawn_boids(1,1,new PVector(Float.parseFloat(args[0]),Float.parseFloat(args[1])));
+        if (mode==1) {
+            game.spawn_boids(0, amountOfBoids, new PVector(450, 510));
+            game.spawn_boids(1, 1, new PVector(Float.parseFloat(args[0]), Float.parseFloat(args[1])));
+        }
 
         createDifficulties();
     }
     public void createDifficulties(){
-        medium.add(new PVector(450,550));
-        medium.add(new PVector(650,500));
-        medium.add(new PVector(450,405));
+        medium.add(new PVector(530,525));
+        medium.add(new PVector(650,425));//changed
+        medium.add(new PVector(530,330));
 
-        hard.add(new PVector(550,535));
-        hard.add(new PVector(550,485));
+        hard.add(new PVector(530,500));
+        hard.add(new PVector(530,405));
 
-        easy.add(new PVector(450,550));
+        easy.add(new PVector(450,600));
         easy.add(new PVector(650,500));
         easy.add(new PVector(450,405));
         easy.add(new PVector(590,305));
@@ -102,15 +104,13 @@ public class ParameterGatherAndSetter {
 
     }
 
-    public void generateEndingStatement(int v) throws IOException {
+    public String generateEndingStatement(int v) throws IOException {
         ArrayList<String> lines = new ArrayList<>();
-        lines.add(AI_manager.getAi_basic().getSep_neighbourhood_size() + "," + AI_manager.getAi_basic().getAli_neighbourhood_size() + "," + AI_manager.getAi_basic().getCoh_neighbourhood_size() + "," + AI_manager.getAi_basic().getSep_weight()  + "," + AI_manager.getAi_basic().getAli_weight() + "," + AI_manager.getAi_basic().getCoh_weight() );
-        lines.add(v+","+Math.round((System.nanoTime()-startTime)/1000000000)+","+Math.round((System.nanoTime()-startTimeWithoutwait)/1000000000)+","+ iterations + "," + difficulty+","+amountOfBoids+","+x+","+y+"\n");
 
-            lines.addAll(history_of_learning);
+        String s = v+","+Math.round((System.nanoTime()-startTime)/1000000000)+","+Math.round((System.nanoTime()-startTimeWithoutwait)/1000000000)+","+ iterations + "," + difficulty+","+amountOfBoids+","+x+","+y+"\n";
 
-        Path file = Paths.get(args[5]+counter+".txt");
-        Files.write(file, lines, Charset.forName("UTF-8"));
+        return s;
+
 
     }
 

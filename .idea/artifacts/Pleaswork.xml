@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Pleaswork">
+    <output-path>$PROJECT_DIR$/out/artifacts/Pleaswork</output-path>
+    <root id="archive" name="Smart_source_code.jar">
+      <element id="module-output" name="Smart_source_code" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/1pamDecreasing/1pamDecreasing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Users/LukePc/Anaconda3/Lib/site-packages/py4j-0.10.8.1-py3.7.egg/share/py4j/py4j0.10.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/1pamNot/1pamNotDecreasing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/smarr__3_jar/notDecreasing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/burlap-3.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/decreasing/smart++decreasing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/BOIDS_debugging_2002_jar/BOIDS-debugging-2002.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/Adaptive Flocking.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

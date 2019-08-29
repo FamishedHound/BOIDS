@@ -71,6 +71,7 @@ public class  Launcher extends PApplet {
 	}
 
 	public void setup() {
+		System.out.println("args" + Arrays.toString(args));
 		client_dimensions = new PVector(width, height);
 		System.out.println("Client size: " + client_dimensions);
 		// create fonts
@@ -90,9 +91,9 @@ public class  Launcher extends PApplet {
 		collision = new CollisionHandler(game_sys);
 
 
-		empiricBoy = new ParameterGatherAndSetter(1900,500,0,0,game_sys,collision,args);
+		empiricBoy = new ParameterGatherAndSetter(game_sys,collision,args,1);
 		try {
-			zone = new ZoneDefence(base,game_sys,this,collision,flock,empiricBoy);
+			zone = new ZoneDefence(base,game_sys,this,collision,flock,empiricBoy,args);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

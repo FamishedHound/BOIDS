@@ -76,7 +76,7 @@ public class CollisionHandler {
 //                    b2.getVelocity().add(v2);
 //                   // System.out.println(b2.getVelocity() + " after2");
                     lose=true;
-                } else if(PVector.dist(b2.getLocation(),new PVector(550,500f))<=10){
+                } else if(PVector.dist(b2.getLocation(),new PVector(450, 510))<=10){
                     victory=true;
 
                 }
